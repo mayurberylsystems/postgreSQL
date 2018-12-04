@@ -1,0 +1,64 @@
+-select:this query statement is used to form different complex and powerful queries.
+
+-delete:  used for deleting a record. ex-delete from company where id>=10; this will delete all records with id >=10.
+
+-order by:the ORDER BY clause allows you to sort the rows returned from the SELECT statement in ascending or descending order based on the specified criteria.
+
+-add: used for adding a field to the table. ex-alter table company add emp_id int; this will add a emp_id field to table named as company.
+
+-drop: used for removing a table dbms or a field of a table.
+
+-distinct:The DISTINCT clause is used in the SELECT statement to remove duplicate rows from the result set. The DISTINCT clause keeps one row for each group of duplicates.
+
+-where:The WHERE clause appears right after the FROM clause of the SELECT statement.  The conditions are used to filter the rows returned from the SELECT statement.
+
+-and,or:used for combining multiple condition.
+
+-limit:PostgreSQL LIMIT is an optional clause of the SELECT statement that gets a subset of rows returned by a query.
+
+-fetch:To conform with the SQL standard, PostgreSQL provides the FETCH clause to retrieve a portion of rows returned by a query.ex- feA CROSS JOIN clause allows you to produce the Cartesian Product of rows in two or more tables.tch first 5 row only.
+
+-in:use the IN operator in the WHERE clause to check if a value matches any value in a list of values.we also use 'in' in a subquery where we aren't 100% sure of the results of subquery. ex-where cust_id in(1,2,3) i.e. equal to 1 or 2or 3.
+
+-between:use the BETWEEN operator to match a value against a range of values.ex- where salary between 8000 and 10000.
+
+-like: for finding a pattern.it uses % and _. ex- where name like 'ma%' or 'm_y%.'
+
+-alias- as is used to changing name of field in the output. ex- select cust_id as id from company.
+
+-group by:The GROUP BY clause divides the rows returned from the SELECT statement into groups. For each group, you can apply an aggregate function e.g., SUM to calculate the sum of items or COUNT to get the number of items in the groups.
+
+*first where then group then having and at last order by clause is used.
+
+-having:The HAVING clause sets the condition for group rows created by the GROUP BY clause after the GROUP BY clause applies while the WHERE clause sets the condition for individual rows before GROUP BY clause applies. This is the main difference between the HAVINGand WHEREclauses.
+
+-aggregate functions:
+	count-counts the no. of rows with data in a field or table are present. ex: select count(*) from company.
+	max-retuns the max value for a field. ex: select max(salary) from company.
+	min-returns min value. ex: select min(salary) from company.
+	avg-returns avg of all rows in a field. ex: select avg(salary) from company.
+	sum-sum of all the rows in a field. ex: select sum(salary) from company.
+	array-represents the row elements into arry. ex- select array_agg(name) from company.
+	json- used for forming key value sets of array. ex- json_object_agg(name,age) from company.
+
+-joins: joing 2 or more tables in order to form a powerful query.
+
+-types of joins: inner join, left join, right join, self join, cross join, natural join, full outer join.
+
+	Table which is mentioned before keA CROSS JOIN clause allows you to produce the Cartesian Product of rows in two or more tables.yword join is apparently called as left 				and the other table is right.
+
+	The practically solved answers regarding joins are in another joins file containing 		screenchot of terminal window.
+	
+	inner join: join the table say (A) and (B)on the basis of matching field and thus form records and filters away the unmatched field and records i.e. If it finds a match, it combines columns of both rows into one row and add the combined row to the returned result set.
+	
+	left join:The LEFT JOIN clause returns all rows in the left table (A) that are combined with rows in the right table (B) even though there is no corresponding rows in the right table (B).
+
+	right join: returns all the rows of right side table i.e. table B.
+
+	self join: A self-join is a query in which a table is joined to itself. Self-joins are useful for comparing values in a column of rows within the same table.
+
+	full outer join:The full outer joiA CROSS JOIN clause allows you to produce the Cartesian Product of rows in two or more tables.n coA CROSS JOIN clause allows you to produce the Cartesian Product of rows in two or more tables.mbines the results of both left  join and right join. If the rows in the joined table do not match, the full outer join sets NULL values for every column of the table that lacks a matching row. For the matching rows , a single row is included in the result set that contains columns populated from both joined tables.
+	
+	cross join:A CROSS JOIN clause allows you to produce the Cartesian Product of rows in two or more tables.
+	
+The practically solved answers regarding joins are in another joins file containing screenchot of terminal window.
