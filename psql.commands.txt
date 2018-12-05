@@ -1,3 +1,6 @@
+						COMMANDS IN POSTGRE SQL
+						_______________________
+
 -select:this query statement is used to form different complex and powerful queries.
 
 -delete:  used for deleting a record. ex-delete from company where id>=10; this will delete all records with id >=10.
