@@ -1,29 +1,89 @@
-a.select a.a_name from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id where e.salary>80000;
+a. Find the names of aircraft such that all pilots certified to operate them earn more than $80,000.
 
-b.select e_name, max(cruisingrange) from (select e.e_name,e.e_id,a.a_name,a.cruisingrange from certified c join aircraft a on a.a_id=c.a_id join employee e on 							e.e_id=c.e_id where e.e_id in (select e_id from certified group by e_id having count(*)>=2))as names group by e_name; 
-
-c.select e.e_name from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id inner join flights f on f.c_id=c.c_id where 			e.salary<(select price from flights where source='los angeles' and destination='honululu' limit 1);
-
-d.select a.a_name,avg(e.salary) from certified c join aircraft a on a.a_id=c.a_id join employee e on e.e_id=c.e_id group by a.a_name;
-
-e.select c.c_id, a.a_id,a.cruisingrange,e.e_name,e.salary from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id where 			a.a_id=(select a_id from aircraft where a_name='boeing');
-
-f.select a_id from certified where c_id in (select c_id from flights where source='los angeles' and destination='chichago');
-
-g.select source,destination from flights where c_id in (select c_id from certified where e_id in (select e_id from employee where salary>100000));
-
-h.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name!='boeing' and cruisingrange>'3000'));
-
-i.(select source,destination,departure_time,arrival_time from flights where source='madinson' union select source,destination,departure_time,arrival_time from flights where destination='newyork' and arrival_time<'06:00:00')order by source desc;
+-->>select distinct(a.a_name) from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id where e.salary>80000;
 
 
-j.select (select avg(salary) from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)))-(select avg(salary) from employee)as 		diff_p_vs_emp;
 
-k.select e_name,salary from employee where e_id not in (select distinct(e_id) from certified where a_id in (select a_id from aircraft)) and salary>(select avg(salary) 		from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)));
 
-l.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where cruisingrange>'1000'));
+b. For each pilot who is certified for more than three aircraft, find the eid and the maximum cruisingrange of the aircraft for which she or he is certified.
 
-m.select e_name from employee where e_id in (select e_id from (select e_id,count(*) from certified where a_id in
- 								(select a_id from aircraft where cruisingrange>'1000')group by e_id) as e_id);
+-->>select e_name, max(cruisingrange) from (select e.e_name,e.e_id,a.a_name,a.cruisingrange from certified c join aircraft a on a.a_id=c.a_id join employee e on e.e_id=c.e_id where e.e_id in (select e_id from certified group by e_id having count(*)>=3))as names group by e_name; 
 
-n.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name='boeing' and cruisingrange>'1000'));
+
+
+
+c.Find the names of pilots whose salary is less than the price of the cheapest route from Los Angeles to Honolulu.
+
+-->>select e.e_name from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id inner join flights f on f.c_id=c.c_id where e.salary<(select price from flights where source='los angeles' and destination='honululu' limit 1);
+
+
+
+
+d.For all aircraft with cruisingrange over 1000 miles, find the name of the aircraft and the average salary of all pilots certified for this aircraft.
+
+-->>select a.a_name,avg(e.salary) from certified c join aircraft a on a.a_id=c.a_id join employee e on e.e_id=c.e_id where a.cruisingrange>'1000' group by a.a_name;
+
+
+
+
+e.Find the names of pilots certified for some Boeing aircraft.
+
+-->>select c.c_id, a.a_id,a.cruisingrange,e.e_name,e.salary from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id where a.a_id=(select a_id from aircraft where a_name='boeing');
+
+
+
+f.Find the aids of all aircraft that can be used on routes from Los Angeles to Chicago.
+
+-->>select a_id from certified where c_id in (select c_id from flights where source='los angeles' and destination='chichago');
+
+
+
+g.Identify the routes that can be piloted by every pilot who makes more than $100,000.
+
+-->>select source,destination from flights where c_id in (select c_id from certified where e_id in (select e_id from employee where salary>100000));
+
+
+
+h.Print the enames of pilots who can operate planes with cruisingrange greater than 3000 miles but are not certified on any Boeing aircraft.
+
+-->>select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name!='boeing' and cruisingrange>'3000'));
+
+
+
+i. A customer wants to travel from Madison to New York with no more than two changes of flight. List the choice of departure times from Madison if the customer wants to arrive in New York by 6 p.m.
+
+-->>(select source,destination,departure_time,arrival_time from flights where source='madinson' union select source,destination,departure_time,arrival_time from flights where destination='newyork' and arrival_time<'06:00:00')order by source desc;
+
+
+
+j. Compute the difference between the average salary of a pilot and the average salary of all employees (including pilots).
+
+-->>select (select avg(salary) from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)))-(select avg(salary) from employee)as diff_p_vs_emp;
+
+
+
+k. Print the name and salary of every nonpilot whose salary is more than the average salary for pilots. 
+
+-->>select e_name,salary from employee where e_id not in (select distinct(e_id) from certified where a_id in (select a_id from aircraft)) and salary>(select avg(salary) 		from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)));
+
+
+
+l.Print the names of employees who are certified only on aircrafts with cruising range longer than 1000 miles.
+
+-->>select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where cruisingrange>'1000'));
+
+
+
+m. Print the names of employees who are certified only on aircrafts with cruising range longer than 1000 miles, but on at least two such aircrafts.
+
+-->>select e_name from employee where e_id in (select e_id from (select e_id,count(*) from certified where a_id in 								(select a_id from aircraft where cruisingrange>'1000')group by e_id having count(*)>=2) as e_id);
+
+
+
+n.Print the names of employees who are certified only on aircrafts with cruising range longer than 1000 miles and who are certified on some Boeing aircraft. 
+
+-->>select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name='boeing' and cruisingrange>'1000'));
+
+
+
+
