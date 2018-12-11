@@ -1,0 +1,28 @@
+a.select a.a_name from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id where e.salary>80000;
+
+b.select e_name, max(cruisingrange) from (select e.e_name,e.e_id,a.a_name,a.cruisingrange from certified c join aircraft a on a.a_id=c.a_id join employee e on 							e.e_id=c.e_id where e.e_id in (select e_id from certified group by e_id having count(*)>=2))as names group by e_name; 
+
+c.select e.e_name from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id inner join flights f on f.c_id=c.c_id where 			e.salary<(select price from flights where source='los angeles' and destination='honululu' limit 1);
+
+d.select a.a_name,avg(e.salary) from certified c join aircraft a on a.a_id=c.a_id join employee e on e.e_id=c.e_id group by a.a_name;
+
+e.select c.c_id, a.a_id,a.cruisingrange,e.e_name,e.salary from certified c inner join aircraft a on a.a_id=c.a_id inner join employee e on e.e_id=c.e_id where 			a.a_id=(select a_id from aircraft where a_name='boeing');
+
+f.select a_id from certified where c_id in (select c_id from flights where source='los angeles' and destination='chichago');
+
+g.select source,destination from flights where c_id in (select c_id from certified where e_id in (select e_id from employee where salary>100000));
+
+h.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name!='boeing' and cruisingrange>'3000'));
+
+i.
+
+j.select (select avg(salary) from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)))-(select avg(salary) from employee)as 		diff_p_vs_emp;
+
+k.select e_name,salary from employee where e_id not in (select distinct(e_id) from certified where a_id in (select a_id from aircraft)) and salary>(select avg(salary) 		from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)));
+
+l.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where cruisingrange>'1000'));
+
+m.select e_name from employee where e_id in (select e_id from (select e_id,count(*) from certified where a_id in
+ 								(select a_id from aircraft where cruisingrange>'1000')group by e_id) as e_id);
+
+n.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name='boeing' and cruisingrange>'1000'));
