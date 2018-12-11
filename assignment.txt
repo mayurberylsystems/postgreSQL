@@ -14,7 +14,8 @@ g.select source,destination from flights where c_id in (select c_id from certifi
 
 h.select e_name from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft where a_name!='boeing' and cruisingrange>'3000'));
 
-i.
+i.(select source,destination,departure_time,arrival_time from flights where source='madinson' union select source,destination,departure_time,arrival_time from flights where destination='newyork' and arrival_time<'06:00:00')order by source desc;
+
 
 j.select (select avg(salary) from employee where e_id in (select e_id from certified where a_id in (select a_id from aircraft)))-(select avg(salary) from employee)as 		diff_p_vs_emp;
 
